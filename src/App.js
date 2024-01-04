@@ -19,7 +19,7 @@ function App() {
 		setError(null);
 		setApiResponse("");
 		try{
-		const apiKey = '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';
+		const apiKey = '';
 		const prompt = inputText;
 		const response = await axios.post(
 			'https://api.openai.com/v1/engines/davinci/completions',
