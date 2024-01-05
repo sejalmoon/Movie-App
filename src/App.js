@@ -7,8 +7,12 @@ import './App.css';
 function App() {
 
 	const [inputText, setInputText] = useState("");
+	const [movieBossText, setMovieBossText] = useState("Give me a one-sentence concept and I'll give you an eye-catching title, a synopsis the studios will love, a movie poster... AND choose the cast!");
 	const [error, setError] = useState(null);
 	const [apiResponse, setApiResponse] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+	const [synopsis, setSynopsis] = useState("");
+	const [title, setTitle] = useState("");
 
 	const handleTextChange = (event) => {
 		setInputText(event.target.value);
@@ -16,10 +20,14 @@ function App() {
 
 
 	const handleSendClick = async () => {
+		if(inputText){
+			setIsLoading(true);
+			setMovieBossText("Ok, just wait a second while my digital brain digests that...");
+
 		setError(null);
 		setApiResponse("");
 		try{
-		const apiKey = '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';
+		const apiKey = '';
 		const prompt = inputText;
 		const response = await axios.post(
 			'https://api.openai.com/v1/engines/davinci/completions',
@@ -33,6 +41,7 @@ function App() {
 				}
 			}
 		);
+		setIsLoading(false);
 		setApiResponse(response.data.choices[0].text); 
 	} catch (error) {
 		if (error.response) {
@@ -45,7 +54,9 @@ function App() {
 		  console.error("Error message:", error.message);
 		  setError("An error occurred: " + error.message);
 		}
+		setIsLoading(false);
 	  }
+	}
 	};
 
   return (
@@ -57,8 +68,7 @@ function App() {
 					<img src="./movieboss.png"/>
 					<div className="speech-bubble-ai" id="speech-bubble-ai">
 						<p id="movie-boss-text">
-							Give me a one-sentence concept and I'll give you an eye-catching title, a synopsis the studios will love, a movie poster...
-							AND choose the cast!
+							{movieBossText}
 						</p>
 					</div>
 				</div>
@@ -67,6 +77,7 @@ function App() {
 					<button className="send-btn" id="send-btn" aria-label="send" onClick={handleSendClick}>
 							<img src="./send-btn-icon.png" alt="send"/>
 					</button>
+					{isLoading && <img src="./loading.svg" alt="Loading" />}
 					{error && <p className="error-message">{error}</p>}
 					{apiResponse && <div className="output-container">
         			<p>{apiResponse}</p>
