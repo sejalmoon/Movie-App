@@ -28,7 +28,7 @@ function App() {
 		setError(null);
 		setApiResponse("");
 		try{
-		const apiKey = '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';
+		const apiKey = '';
 		
 		
 		const botReply = await fetchBotReply(inputText);
@@ -55,7 +55,7 @@ function App() {
 
 	const fetchBotReply = async (outline) => {
 		try {
-		  const apiKey = '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';	
+		  const apiKey = '';	
 		  const response = await axios.post(
 			'https://api.openai.com/v1/engines/davinci/completions',
 			{
@@ -90,7 +90,7 @@ function App() {
 
 	const fetchBotSynopsis = async (outline) => {
 		try {
-			const apiKey = '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';	
+			const apiKey = '';	
 			const response = await axios.post(
 			  'https://api.openai.com/v1/engines/davinci/completions',
 			  {
@@ -128,7 +128,7 @@ function App() {
 
 	const fetchTitle = async (synopsis) => {
 		try {
-		  const apiKey = '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';	
+		  const apiKey = '';	
 		  const response = await axios.post(
 			'https://api.openai.com/v1/engines/davinci/completions',
 			{
