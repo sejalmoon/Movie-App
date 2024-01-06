@@ -28,7 +28,7 @@ function App() {
 		setError(null);
 		setApiResponse("");
 		try{
-		const apiKey = '';
+		const apiKey = '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';
 		
 		
 		const botReply = await fetchBotReply(inputText);
@@ -55,7 +55,7 @@ function App() {
 
 	const fetchBotReply = async (outline) => {
 		try {
-		  const apiKey = '';	
+		  const apiKey = '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';	
 		  const response = await axios.post(
 			'https://api.openai.com/v1/engines/davinci/completions',
 			{
@@ -90,7 +90,7 @@ function App() {
 
 	const fetchBotSynopsis = async (outline) => {
 		try {
-			const apiKey = '';	
+			const apiKey = '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';	
 			const response = await axios.post(
 			  'https://api.openai.com/v1/engines/davinci/completions',
 			  {
@@ -116,8 +116,6 @@ function App() {
 			const synopsis=response.data.choices[0].text;
 			const botTitle = await fetchTitle(synopsis);
 			setTitle(botTitle); 
-			const botStars = await fetchStars(synopsis);
-			setStars(botStars);
 			return response.data.choices[0].text;
 
 
@@ -130,12 +128,12 @@ function App() {
 
 	const fetchTitle = async (synopsis) => {
 		try {
-		  const apiKey = '';	
+		  const apiKey = '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';	
 		  const response = await axios.post(
 			'https://api.openai.com/v1/engines/davinci/completions',
 			{
-			  prompt: `Generate a catchy movie title for this synopsis under 10 words: ${synopsis}`,
-			  max_tokens: 25,
+			  prompt: `Generate a catchy movie title in capital letters for this synopsis under 10 words: ${synopsis}`,
+			  max_tokens: 10,
 			},
 			{
 			  headers: {
@@ -147,35 +145,6 @@ function App() {
 		} catch (error) {
 		  console.error("Error in fetchTitle", error);
 		  return "An error occurred while fetching the Title.";
-		}
-	};
-
-	const fetchStars = async (synopsis) => {
-		try {
-		  const apiKey = '';	
-		  const response = await axios.post(
-			'https://api.openai.com/v1/engines/davinci/completions',
-			{
-			  prompt: `Extract the names of actors in brackets from the synopsis.
-			  ###
-			  synopsis: The Top Gun Naval Fighter Weapons School is where the best of the best train to refine their elite flying skills. When hotshot fighter pilot Maverick (Tom Cruise) is sent to the school, his reckless attitude and cocky demeanor put him at odds with the other pilots, especially the cool and collected Iceman (Val Kilmer). But Maverick isn't only competing to be the top fighter pilot, he's also fighting for the attention of his beautiful flight instructor, Charlotte Blackwood (Kelly McGillis). Maverick gradually earns the respect of his instructors and peers - and also the love of Charlotte, but struggles to balance his personal and professional life. As the pilots prepare for a mission against a foreign enemy, Maverick must confront his own demons and overcome the tragedies rooted deep in his past to become the best fighter pilot and return from the mission triumphant.
-			  names: Tom Cruise, Val Kilmer, Kelly McGillis
-			  ###
-			  synopsis: ${synopsis}
-			  names:   
-			  `,		  
-			  max_tokens: 30,
-			},
-			{
-			  headers: {
-				'Authorization': `Bearer ${apiKey}`
-			  }
-			}
-		  );
-		  return response.data.choices[0].text;
-		} catch (error) {
-		  console.error("Error in fetchTitle", error);
-		  return "An error occurred while fetching the Stars.";
 		}
 	};
 	
@@ -210,7 +179,7 @@ function App() {
 			</section>	
 			<section className="output-container" id="output-container">
 				<div id="output-img-container" className="output-img-container"></div>
-				<h1 id="output-title">
+				<h1 className="Title" id="output-title">
 					{title}
 				</h1>
 				<h2 id="output-stars">

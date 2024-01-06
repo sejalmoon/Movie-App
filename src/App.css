@@ -15,7 +15,7 @@ html, body {
 }
 
 body {
-  font-family: 'Poppins';
+  font-family: 'Andale Mono', 'monospace';
   background-size: cover;
   background-repeat: repeat-y;
   background-image: url('../public/moviepitchbg-dark.jpg');
@@ -25,12 +25,16 @@ body {
   justify-content: space-between;
 }
 
+.Title{
+  text-transform: capitalize;
+}
+
 /* =================
     Typography 
    ================= */
 
 h1 {
-  font-family: 'Playfair Display SC', serif;
+  font-family:'Andale Mono', 'monospace';
   text-align: center;
 }
 
@@ -39,6 +43,7 @@ h2 {
 }
 
 p {
+  font-family:'Courier New', Courier, monospace;
   line-height: 1.35em;
 }
 
@@ -47,6 +52,7 @@ p {
    ================= */
 
 header {
+  font-family: 'Playfair Display SC', serif;
   background-color: var(--dark);
   display: flex;
   justify-content: center;
@@ -156,7 +162,7 @@ textarea {
   resize: none;
   min-height: 40px;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Andale Mono', 'monospace';
 }
 
 textarea::placeholder {
