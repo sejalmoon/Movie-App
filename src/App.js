@@ -17,7 +17,7 @@ function App() {
 	const handleTextChange = (event) => {
 		setInputText(event.target.value);
 	  };
-
+		
 
 	const handleSendClick = async () => {
 		if(inputText){
@@ -28,21 +28,14 @@ function App() {
 		setApiResponse("");
 		try{
 		const apiKey = '';
-		const prompt = inputText;
-		const response = await axios.post(
-			'https://api.openai.com/v1/engines/davinci/completions',
-			{
-				prompt: prompt,
-				max_tokens: 100
-			},
-			{
-				headers: {
-					'Authorization': `Bearer ${apiKey}`
-				}
-			}
-		);
+		
+		
+		const botReply = await fetchBotReply(inputText);
 		setIsLoading(false);
-		setApiResponse(response.data.choices[0].text); 
+		const botSynopsis = await fetchBotSynopsis(inputText);
+		setMovieBossText(botReply); 
+		setSynopsis(botSynopsis);
+
 	} catch (error) {
 		if (error.response) {
 		  console.error("Error response:", error.response.data);
@@ -58,6 +51,73 @@ function App() {
 	  }
 	}
 	};
+
+	const fetchBotReply = async (outline) => {
+		try {
+		  const apiKey = '';	
+		  const response = await axios.post(
+			'https://api.openai.com/v1/engines/davinci/completions',
+			{
+			  prompt: `Generate a short message under 30 words to enthusiastically say the outline passed sounds interesting and that you need some minutes to think about it.
+			  ###
+			  outline: Two dogs fall in love and move to Hawaii to learn to surf.
+			  message: I'll need to think about that. But your idea is amazing! I love the bit about Hawaii!
+			  ###
+			  outline:A plane crashes in the jungle and the passengers have to walk 1000km to safety.
+			  message: I'll spend a few moments considering that. But I love your idea!! A disaster movie in the jungle!
+			  ###
+			  outline: A group of corrupt lawyers try to send an innocent woman to jail.
+			  message: Wow that is awesome! Corrupt lawyers, huh? Give me a few moments to think!
+			  ###
+			  outline: ${outline}
+			  message: 
+			  `,
+			  max_tokens: 40,
+			},
+			{
+			  headers: {
+				'Authorization': `Bearer ${apiKey}`
+			  }
+			}
+		  );
+		  return response.data.choices[0].text;
+		} catch (error) {
+		  console.error("Error in fetchBotReply:", error);
+		  return "An error occurred while fetching the bot reply.";
+		}
+	};
+
+	const fetchBotSynopsis = async (outline) => {
+		try {
+			const apiKey = '';	
+			const response = await axios.post(
+			  'https://api.openai.com/v1/engines/davinci/completions',
+			  {
+				prompt: `Generate an engaging, professional and marketable movie synopsis based on the outline. The synopsis should include actors names in brackets after each character. Choose actors that would be ideal for this role. 
+				###
+				outline: A big-headed daredevil fighter pilot goes back to school only to be sent on a deadly mission.
+				synopsis: The Top Gun Naval Fighter Weapons School is where the best of the best train to refine their elite flying skills. When hotshot fighter pilot Maverick (Tom Cruise) is sent to the school, his reckless attitude and cocky demeanor put him at odds with the other pilots, especially the cool and collected Iceman (Val Kilmer). But Maverick isn't only competing to be the top fighter pilot, he's also fighting for the attention of his beautiful flight instructor, Charlotte Blackwood (Kelly McGillis). Maverick gradually earns the respect of his instructors and peers - and also the love of Charlotte, but struggles to balance his personal and professional life. As the pilots prepare for a mission against a foreign enemy, Maverick must confront his own demons and overcome the tragedies rooted deep in his past to become the best fighter pilot and return from the mission triumphant.  
+				###
+				outline: ${outline}
+				synopsis: 
+				`,
+
+				max_tokens: 300,
+			  },
+			  {
+				headers: {
+				  'Authorization': `Bearer ${apiKey}`
+				}
+			  }
+			);
+			return response.data.choices[0].text;
+		} catch (error) {
+		  console.error("Error in fetchBotSynopsis:", error);
+		  return "An error occurred while fetching the bot synopsis.";
+		}
+		
+	};
+	
 
   return (
     <div className="App">
@@ -80,7 +140,6 @@ function App() {
 					{isLoading && <img src="./loading.svg" alt="Loading" />}
 					{error && <p className="error-message">{error}</p>}
 					{apiResponse && <div className="output-container">
-        			<p>{apiResponse}</p>
       				</div>}
 				</div>
 				
@@ -89,7 +148,9 @@ function App() {
 				<div id="output-img-container" className="output-img-container"></div>
 				<h1 id="output-title"></h1>
 				<h2 id="output-stars"></h2>
-				<p id="output-text"></p>
+				<p id="output-text">
+					{synopsis}
+				</p>
 			</section>	
 
     </div>
